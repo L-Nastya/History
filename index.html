@@ -2,94 +2,172 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <title>Карточки с числами</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-      background: #f0f0f0;
-    }
-    #sidebar {
-      width: 100px;
-      background: #fff;
-      border-right: 1px solid #ccc;
-      overflow-y: auto;
-      padding: 10px;
-    }
-    #sidebar button {
-      width: 80px;
-      margin: 5px auto;
-      padding: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      border: none;
-      border-radius: 8px;
-      background-color: #ddd;
-      transition: background-color 0.3s;
-      display: block;
-      text-align: center;
-    }
-    #sidebar button.read {
-      background-color: #4caf50;
-      color: white;
-    }
-    #sidebar button.selected {
-      box-shadow: 0 0 5px 2px #2196f3;
-      font-weight: bold;
-    }
+    <title>История</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        background: #f0f0f0;
+        overflow: hidden;
+      }
+      #sidebar {
+        width: 100px;
+        background: #fff;
+        border-right: 1px solid #ccc;
+        overflow-y: auto;
+        padding: 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #sidebar button {
+        width: 80px;
+        margin: 5px auto;
+        padding: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background-color: #ddd;
+        transition: background-color 0.3s;
+        display: block;
+        text-align: center;
+      }
+      #sidebar button.read {
+        background-color: #4caf50;
+        color: white;
+      }
+      #sidebar button.selected {
+        box-shadow: 0 0 5px 2px #2196f3;
+        font-weight: bold;
+      }
+      #sidebar #showHistoryBtn {
+        background-color: #2196f3;
+        color: white;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+      #sidebar #showHistoryBtn:hover {
+        background-color: #0b7dda;
+      }
 
-    #content {
-      flex-grow: 1;
-      padding: 30px;
-      background: white;
-      margin: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-    }
-    #content h2 {
-      margin-top: 0;
-      font-size: 28px;
-      color: #333;
-    }
-    #content p {
-      font-size: 18px;
-      color: #555;
-      line-height: 1.4;
-    }
-    #mark-read-btn {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 16px;
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    #mark-read-btn:hover {
-      background-color: #0b7dda;
-    }
-  </style>
+      #content {
+        flex-grow: 1;
+        padding: 30px;
+        background: white;
+        margin: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        overflow-y: auto;
+      }
+      #content h2 {
+        margin-top: 0;
+        font-size: 28px;
+        color: #333;
+      }
+      #content p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.4;
+      }
+      #mark-read-btn {
+        margin-top: 20px;
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      #mark-read-btn:hover {
+        background-color: #0b7dda;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 700px) {
+        body {
+          flex-direction: column;
+          height: auto;
+        }
+        #sidebar {
+          width: 100%;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid #ccc;
+          padding: 5px;
+          flex-wrap: wrap;
+          flex-direction: row;
+          justify-content: center;
+        }
+        #sidebar button {
+          width: 60px;
+          margin: 5px 3px;
+          padding: 6px;
+          font-size: 12px;
+        }
+        #content {
+          max-width: 100%;
+          margin: 10px;
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: none;
+          height: auto;
+        }
+        #content .story-container {
+          background: #fffef8;
+          padding: 25px 30px;
+          border-radius: 12px;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+          line-height: 1.7;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+        #content .story-part {
+          margin-bottom: 1.5em;
+        }
+        #content .story-part h4 {
+          margin: 0 0 0.3em 0;
+          font-weight: 700;
+          font-size: 1.2em;
+          color: #333;
+        }
+        #content .story-part p {
+          margin: 0;
+          color: #555;
+        }
+      }
+    </style>
+  </head>
   <body>
-    <div id="sidebar"></div>
+    <div id="sidebar">
+      <!-- Кнопки для дней + кнопка показать историю -->
+    </div>
 
     <div id="content">
       <h2>Выберите число слева</h2>
-      <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
+      <p>Здесь появится текст с частью истории.</p>
     </div>
 
     <script>
       let texts = {};
-      const totalDays = 127;
+      const totalDays = 89;
 
+      // Статусы прочтения и сохранённая история (массив объектов {day, text})
+      let readStatus = JSON.parse(localStorage.getItem("readStatus")) || {};
+      let savedHistory = JSON.parse(localStorage.getItem("savedHistory")) || [];
+
+      const sidebar = document.getElementById("sidebar");
+      const content = document.getElementById("content");
+
+      let isShowingHistory = false; // флаг показываем ли историю или выбор по дням
+
+      // Загрузка JSON с текстами
       fetch("texts.json")
         .then((response) => response.json())
         .then((data) => {
@@ -98,20 +176,15 @@
         })
         .catch((err) => {
           console.error("Ошибка загрузки texts.json", err);
-          // На случай ошибки — создадим кнопки с пустыми текстами
           for (let i = 1; i <= totalDays; i++) {
             texts[i] = `Текст для дня ${i} отсутствует`;
           }
           createButtons();
         });
 
-      const sidebar = document.getElementById("sidebar");
-      const content = document.getElementById("content");
-
-      let readStatus = JSON.parse(localStorage.getItem("readStatus")) || {};
-
+      // Создаем кнопки для выбора дня + кнопку "Показать историю"
       function createButtons() {
-        sidebar.innerHTML = ""; // очистить если уже есть
+        sidebar.innerHTML = "";
 
         for (let i = 1; i <= totalDays; i++) {
           const btn = document.createElement("button");
@@ -119,13 +192,36 @@
           if (readStatus[i]) btn.classList.add("read");
 
           btn.addEventListener("click", () => {
+            isShowingHistory = false;
             selectDay(i);
           });
 
           sidebar.appendChild(btn);
         }
+
+        // Кнопка Показать историю
+        const historyBtn = document.createElement("button");
+        historyBtn.id = "showHistoryBtn";
+        historyBtn.textContent = "Показать историю";
+        historyBtn.addEventListener("click", () => {
+          if (isShowingHistory) {
+            // Вернуться к выбору дней
+            isShowingHistory = false;
+            createButtons();
+            content.innerHTML = `
+              <h2>Выберите число слева</h2>
+              <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
+            `;
+          } else {
+            // Показать сохранённую историю
+            isShowingHistory = true;
+            renderSavedHistory();
+          }
+        });
+        sidebar.appendChild(historyBtn);
       }
 
+      // Выбор дня — показываем текст и кнопку прочитано/непрочитано
       function selectDay(day) {
         [...sidebar.children].forEach((b) => b.classList.remove("selected"));
         const selectedBtn = [...sidebar.children].find(
@@ -134,12 +230,14 @@
         if (selectedBtn) selectedBtn.classList.add("selected");
 
         content.innerHTML = `
-    <h2>День ${day}</h2>
-    <p>${texts[day] || "Текст отсутствует"}</p>
-    <button id="mark-read-btn">${
-      readStatus[day] ? "Отметить как непрочитано" : "Отметить как прочитано"
-    }</button>
-  `;
+          <h2>День ${day}</h2>
+          <p>${escapeHTML(texts[day] || "Текст отсутствует")}</p>
+          <button id="mark-read-btn">${
+            readStatus[day]
+              ? "Отметить как непрочитано"
+              : "Отметить как прочитано"
+          }</button>
+        `;
 
         const markBtn = document.getElementById("mark-read-btn");
         markBtn.onclick = () => {
@@ -149,11 +247,79 @@
           if (readStatus[day]) {
             selectedBtn.classList.add("read");
             markBtn.textContent = "Отметить как непрочитано";
+            addToSavedHistory(day, texts[day] || "Текст отсутствует");
           } else {
             selectedBtn.classList.remove("read");
             markBtn.textContent = "Отметить как прочитано";
+            removeFromSavedHistory(day);
           }
         };
+      }
+
+      // Добавить часть в сохранённую историю (если ещё нет), сортируем по дню
+      function addToSavedHistory(day, text) {
+        if (!savedHistory.some((item) => item.day === day)) {
+          savedHistory.push({ day, text });
+          savedHistory.sort((a, b) => a.day - b.day);
+          localStorage.setItem("savedHistory", JSON.stringify(savedHistory));
+        }
+      }
+
+      // Удалить часть из сохранённой истории
+      function removeFromSavedHistory(day) {
+        savedHistory = savedHistory.filter((item) => item.day !== day);
+        localStorage.setItem("savedHistory", JSON.stringify(savedHistory));
+      }
+
+      // Отобразить сохранённую историю вместо выбора дней
+      function renderSavedHistory() {
+        sidebar.innerHTML = "";
+        const backBtn = document.createElement("button");
+        backBtn.textContent = "← Назад к дням";
+        backBtn.style.marginBottom = "15px";
+        backBtn.addEventListener("click", () => {
+          isShowingHistory = false;
+          createButtons();
+          content.innerHTML = `
+      <h2>Выберите число слева</h2>
+      <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
+    `;
+        });
+        sidebar.appendChild(backBtn);
+
+        if (savedHistory.length === 0) {
+          content.innerHTML = `<h2>Собранная история</h2><p>Пока нет прочитанных частей.</p>`;
+          return;
+        }
+
+        content.innerHTML = `<h2>Собранная история</h2>`;
+
+        const storyContainer = document.createElement("div");
+        storyContainer.className = "story-container";
+
+        savedHistory.forEach(({ day, text }) => {
+          const part = document.createElement("div");
+          part.className = "story-part";
+
+          const title = document.createElement("h4");
+          title.textContent = `День ${day}`;
+
+          const paragraph = document.createElement("p");
+          paragraph.textContent = text;
+
+          part.appendChild(title);
+          part.appendChild(paragraph);
+          storyContainer.appendChild(part);
+        });
+
+        content.appendChild(storyContainer);
+      }
+
+      // Экранирование текста для безопасности
+      function escapeHTML(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
       }
     </script>
   </body>
