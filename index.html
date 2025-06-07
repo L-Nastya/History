@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <title>Карточки с числами</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f0f0f0;
+    }
+    #sidebar {
+      width: 100px;
+      background: #fff;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    #sidebar button {
+      width: 80px;
+      margin: 5px auto;
+      padding: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #ddd;
+      transition: background-color 0.3s;
+      display: block;
+      text-align: center;
+    }
+    #sidebar button.read {
+      background-color: #4caf50;
+      color: white;
+    }
+    #sidebar button.selected {
+      box-shadow: 0 0 5px 2px #2196f3;
+      font-weight: bold;
+    }
+
+    #content {
+      flex-grow: 1;
+      padding: 30px;
+      background: white;
+      margin: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+    }
+    #content h2 {
+      margin-top: 0;
+      font-size: 28px;
+      color: #333;
+    }
+    #content p {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.4;
+    }
+    #mark-read-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #mark-read-btn:hover {
+      background-color: #0b7dda;
+    }
+  </style>
+  <body>
+    <div id="sidebar"></div>
+
+    <div id="content">
+      <h2>Выберите число слева</h2>
+      <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
+    </div>
+
+    <script>
+      let texts = {};
+      const totalDays = 127;
+
+      fetch("texts.json")
+        .then((response) => response.json())
+        .then((data) => {
+          texts = data;
+          createButtons();
+        })
+        .catch((err) => {
+          console.error("Ошибка загрузки texts.json", err);
+          // На случай ошибки — создадим кнопки с пустыми текстами
+          for (let i = 1; i <= totalDays; i++) {
+            texts[i] = `Текст для дня ${i} отсутствует`;
+          }
+          createButtons();
+        });
+
+      const sidebar = document.getElementById("sidebar");
+      const content = document.getElementById("content");
+
+      let readStatus = JSON.parse(localStorage.getItem("readStatus")) || {};
+
+      function createButtons() {
+        sidebar.innerHTML = ""; // очистить если уже есть
+
+        for (let i = 1; i <= totalDays; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = i;
+          if (readStatus[i]) btn.classList.add("read");
+
+          btn.addEventListener("click", () => {
+            selectDay(i);
+          });
+
+          sidebar.appendChild(btn);
+        }
+      }
+
+      function selectDay(day) {
+        [...sidebar.children].forEach((b) => b.classList.remove("selected"));
+        const selectedBtn = [...sidebar.children].find(
+          (b) => b.textContent == day
+        );
+        if (selectedBtn) selectedBtn.classList.add("selected");
+
+        content.innerHTML = `
+    <h2>День ${day}</h2>
+    <p>${texts[day] || "Текст отсутствует"}</p>
+    <button id="mark-read-btn">${
+      readStatus[day] ? "Отметить как непрочитано" : "Отметить как прочитано"
+    }</button>
+  `;
+
+        const markBtn = document.getElementById("mark-read-btn");
+        markBtn.onclick = () => {
+          readStatus[day] = !readStatus[day];
+          localStorage.setItem("readStatus", JSON.stringify(readStatus));
+
+          if (readStatus[day]) {
+            selectedBtn.classList.add("read");
+            markBtn.textContent = "Отметить как непрочитано";
+          } else {
+            selectedBtn.classList.remove("read");
+            markBtn.textContent = "Отметить как прочитано";
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
