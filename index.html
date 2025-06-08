@@ -9,318 +9,235 @@
         font-family: Arial, sans-serif;
         display: flex;
         height: 100vh;
-        background: #f0f0f0;
+        background: #ffeef4; /* нежно-розовый фон */
         overflow: hidden;
       }
+
       #sidebar {
-        width: 100px;
+        width: 120px;
         background: #fff;
         border-right: 1px solid #ccc;
-        overflow-y: auto;
         padding: 10px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
       }
+
       #sidebar button {
-        width: 80px;
-        margin: 5px auto;
-        padding: 8px;
+        width: 100%;
+        margin: 5px 0;
+        padding: 10px;
         font-size: 14px;
         cursor: pointer;
         border: none;
         border-radius: 8px;
-        background-color: #ddd;
-        transition: background-color 0.3s;
-        display: block;
-        text-align: center;
-      }
-      #sidebar button.read {
-        background-color: #4caf50;
+        background-color: #ff4081;
         color: white;
-      }
-      #sidebar button.selected {
-        box-shadow: 0 0 5px 2px #2196f3;
-        font-weight: bold;
-      }
-      #sidebar #showHistoryBtn {
-        background-color: #2196f3;
-        color: white;
-        margin-top: 15px;
-        font-weight: bold;
-      }
-      #sidebar #showHistoryBtn:hover {
-        background-color: #0b7dda;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(255, 64, 129, 0.3);
       }
 
-      #content {
+      #sidebar button:hover {
+        background-color: #e91e63;
+        box-shadow: 0 4px 10px rgba(233, 30, 99, 0.5);
+      }
+
+      #sidebar .active {
+        background-color: #e91e63;
+        box-shadow: 0 0 10px rgba(233, 30, 99, 0.6);
+        font-weight: bold;
+      }
+
+      #main-container {
         flex-grow: 1;
-        padding: 30px;
-        background: white;
-        margin: 20px;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         overflow-y: auto;
       }
-      #content h2 {
-        margin-top: 0;
-        font-size: 28px;
-        color: #333;
-      }
-      #content p {
-        font-size: 18px;
-        color: #555;
-        line-height: 1.4;
-      }
-      #mark-read-btn {
-        margin-top: 20px;
-        padding: 12px 24px;
-        font-size: 16px;
-        background-color: #2196f3;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      #mark-read-btn:hover {
-        background-color: #0b7dda;
+
+      .card {
+        width: 90%;
+        max-width: 700px;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        display: none;
       }
 
-      /* Адаптивность */
-      @media (max-width: 700px) {
-        body {
-          flex-direction: column;
-          height: auto;
+      .card.active {
+        display: block;
+      }
+
+      h2 {
+        text-align: center;
+        margin-top: 0;
+        color: #2a2a2a;
+      }
+
+      p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      #input-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      #input-area input {
+        width: 100%;
+        max-width: 400px;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+      }
+
+      #submit-btn {
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(255, 64, 129, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      #submit-btn:hover {
+        background-color: #e91e63;
+        box-shadow: 0 4px 10px rgba(233, 30, 99, 0.5);
+        animation: pulse 1.5s infinite;
+      }
+
+      #collected-story p {
+        font-size: 16px;
+        margin-bottom: 12px;
+        text-align: justify;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.5);
         }
-        #sidebar {
-          width: 100%;
-          height: auto;
-          border-right: none;
-          border-bottom: 1px solid #ccc;
-          padding: 5px;
-          flex-wrap: wrap;
-          flex-direction: row;
-          justify-content: center;
+        70% {
+          box-shadow: 0 0 0 10px rgba(255, 64, 129, 0);
         }
-        #sidebar button {
-          width: 60px;
-          margin: 5px 3px;
-          padding: 6px;
-          font-size: 12px;
-        }
-        #content {
-          max-width: 100%;
-          margin: 10px;
-          border-radius: 12px;
-          padding: 20px;
-          box-shadow: none;
-          height: auto;
-        }
-        #content .story-container {
-          background: #fffef8;
-          padding: 25px 30px;
-          border-radius: 12px;
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-          line-height: 1.7;
-          max-height: 80vh;
-          overflow-y: auto;
-        }
-        #content .story-part {
-          margin-bottom: 1.5em;
-        }
-        #content .story-part h4 {
-          margin: 0 0 0.3em 0;
-          font-weight: 700;
-          font-size: 1.2em;
-          color: #333;
-        }
-        #content .story-part p {
-          margin: 0;
-          color: #555;
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 64, 129, 0);
         }
       }
     </style>
   </head>
   <body>
     <div id="sidebar">
-      <!-- Кнопки для дней + кнопка показать историю -->
+      <button id="enterModeBtn" class="active">Ввод</button>
+      <button id="showHistoryBtn">История</button>
     </div>
 
-    <div id="content">
-      <h2>Выберите число слева</h2>
-      <p>Здесь появится текст с частью истории.</p>
+    <div id="main-container">
+      <div id="enter-card" class="card active">
+        <div id="input-area">
+          <input
+            type="number"
+            id="day-input"
+            placeholder="Введите число (1–89)"
+            min="1"
+            max="89"
+          />
+          <input type="text" id="password-input" placeholder="Введите пароль" />
+          <button id="submit-btn">Узнать часть истории</button>
+        </div>
+        <div id="content">
+          <h2>Вводите число и пароль</h2>
+          <p>После правильного ввода вы увидите часть истории.</p>
+        </div>
+      </div>
+
+      <div id="history-card" class="card">
+        <h2>Собранная история</h2>
+        <div id="collected-story"></div>
+      </div>
     </div>
 
     <script>
       let texts = {};
-      const totalDays = 89;
-
-      // Статусы прочтения и сохранённая история (массив объектов {day, text})
       let readStatus = JSON.parse(localStorage.getItem("readStatus")) || {};
-      let savedHistory = JSON.parse(localStorage.getItem("savedHistory")) || [];
+      let collected = JSON.parse(localStorage.getItem("collectedStory")) || {};
 
-      const sidebar = document.getElementById("sidebar");
-      const content = document.getElementById("content");
-
-      let isShowingHistory = false; // флаг показываем ли историю или выбор по дням
-
-      // Загрузка JSON с текстами
       fetch("texts.json")
-        .then((response) => response.json())
+        .then((res) => res.json())
         .then((data) => {
           texts = data;
-          createButtons();
-        })
-        .catch((err) => {
-          console.error("Ошибка загрузки texts.json", err);
-          for (let i = 1; i <= totalDays; i++) {
-            texts[i] = `Текст для дня ${i} отсутствует`;
-          }
-          createButtons();
+          updateCollectedStory();
         });
 
-      // Создаем кнопки для выбора дня + кнопку "Показать историю"
-      function createButtons() {
-        sidebar.innerHTML = "";
+      const dayInput = document.getElementById("day-input");
+      const passwordInput = document.getElementById("password-input");
+      const submitBtn = document.getElementById("submit-btn");
+      const content = document.getElementById("content");
+      const collectedContainer = document.getElementById("collected-story");
 
-        for (let i = 1; i <= totalDays; i++) {
-          const btn = document.createElement("button");
-          btn.textContent = i;
-          if (readStatus[i]) btn.classList.add("read");
+      const enterCard = document.getElementById("enter-card");
+      const historyCard = document.getElementById("history-card");
+      const enterBtn = document.getElementById("enterModeBtn");
+      const showBtn = document.getElementById("showHistoryBtn");
 
-          btn.addEventListener("click", () => {
-            isShowingHistory = false;
-            selectDay(i);
-          });
+      submitBtn.addEventListener("click", () => {
+        const day = dayInput.value.trim();
+        const password = passwordInput.value.trim().toLowerCase();
 
-          sidebar.appendChild(btn);
-        }
-
-        // Кнопка Показать историю
-        const historyBtn = document.createElement("button");
-        historyBtn.id = "showHistoryBtn";
-        historyBtn.textContent = "Показать историю";
-        historyBtn.addEventListener("click", () => {
-          if (isShowingHistory) {
-            // Вернуться к выбору дней
-            isShowingHistory = false;
-            createButtons();
-            content.innerHTML = `
-              <h2>Выберите число слева</h2>
-              <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
-            `;
-          } else {
-            // Показать сохранённую историю
-            isShowingHistory = true;
-            renderSavedHistory();
-          }
-        });
-        sidebar.appendChild(historyBtn);
-      }
-
-      // Выбор дня — показываем текст и кнопку прочитано/непрочитано
-      function selectDay(day) {
-        [...sidebar.children].forEach((b) => b.classList.remove("selected"));
-        const selectedBtn = [...sidebar.children].find(
-          (b) => b.textContent == day
-        );
-        if (selectedBtn) selectedBtn.classList.add("selected");
-
-        content.innerHTML = `
-          <h2>День ${day}</h2>
-          <p>${escapeHTML(texts[day] || "Текст отсутствует")}</p>
-          <button id="mark-read-btn">${
-            readStatus[day]
-              ? "Отметить как непрочитано"
-              : "Отметить как прочитано"
-          }</button>
-        `;
-
-        const markBtn = document.getElementById("mark-read-btn");
-        markBtn.onclick = () => {
-          readStatus[day] = !readStatus[day];
-          localStorage.setItem("readStatus", JSON.stringify(readStatus));
-
-          if (readStatus[day]) {
-            selectedBtn.classList.add("read");
-            markBtn.textContent = "Отметить как непрочитано";
-            addToSavedHistory(day, texts[day] || "Текст отсутствует");
-          } else {
-            selectedBtn.classList.remove("read");
-            markBtn.textContent = "Отметить как прочитано";
-            removeFromSavedHistory(day);
-          }
-        };
-      }
-
-      // Добавить часть в сохранённую историю (если ещё нет), сортируем по дню
-      function addToSavedHistory(day, text) {
-        if (!savedHistory.some((item) => item.day === day)) {
-          savedHistory.push({ day, text });
-          savedHistory.sort((a, b) => a.day - b.day);
-          localStorage.setItem("savedHistory", JSON.stringify(savedHistory));
-        }
-      }
-
-      // Удалить часть из сохранённой истории
-      function removeFromSavedHistory(day) {
-        savedHistory = savedHistory.filter((item) => item.day !== day);
-        localStorage.setItem("savedHistory", JSON.stringify(savedHistory));
-      }
-
-      // Отобразить сохранённую историю вместо выбора дней
-      function renderSavedHistory() {
-        sidebar.innerHTML = "";
-        const backBtn = document.createElement("button");
-        backBtn.textContent = "← Назад к дням";
-        backBtn.style.marginBottom = "15px";
-        backBtn.addEventListener("click", () => {
-          isShowingHistory = false;
-          createButtons();
-          content.innerHTML = `
-      <h2>Выберите число слева</h2>
-      <p>Здесь появится текст с мотивацией или записью для выбранного дня.</p>
-    `;
-        });
-        sidebar.appendChild(backBtn);
-
-        if (savedHistory.length === 0) {
-          content.innerHTML = `<h2>Собранная история</h2><p>Пока нет прочитанных частей.</p>`;
+        if (!texts[day]) {
+          content.innerHTML = `<h2>Ошибка</h2><p>Нет текста для этого дня.</p>`;
           return;
         }
 
-        content.innerHTML = `<h2>Собранная история</h2>`;
+        if (texts[day].password.toLowerCase() !== password) {
+          content.innerHTML = `<h2>Неверный пароль</h2><p>Попробуйте снова.</p>`;
+          return;
+        }
 
-        const storyContainer = document.createElement("div");
-        storyContainer.className = "story-container";
+        content.innerHTML = `<h2>День ${day}</h2><p>${texts[day].text}</p>`;
+        readStatus[day] = true;
+        collected[day] = texts[day].text;
 
-        savedHistory.forEach(({ day, text }) => {
-          const part = document.createElement("div");
-          part.className = "story-part";
+        localStorage.setItem("readStatus", JSON.stringify(readStatus));
+        localStorage.setItem("collectedStory", JSON.stringify(collected));
 
-          const title = document.createElement("h4");
-          title.textContent = `День ${day}`;
+        updateCollectedStory();
+      });
 
-          const paragraph = document.createElement("p");
-          paragraph.textContent = text;
-
-          part.appendChild(title);
-          part.appendChild(paragraph);
-          storyContainer.appendChild(part);
-        });
-
-        content.appendChild(storyContainer);
+      function updateCollectedStory() {
+        const sortedDays = Object.keys(collected).sort((a, b) => a - b);
+        collectedContainer.innerHTML = sortedDays
+          .map(
+            (day) => `<p><strong>День ${day}:</strong> ${collected[day]}</p>`
+          )
+          .join("");
       }
 
-      // Экранирование текста для безопасности
-      function escapeHTML(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-      }
+      enterBtn.addEventListener("click", () => {
+        enterCard.classList.add("active");
+        historyCard.classList.remove("active");
+        enterBtn.classList.add("active");
+        showBtn.classList.remove("active");
+      });
+
+      showBtn.addEventListener("click", () => {
+        historyCard.classList.add("active");
+        enterCard.classList.remove("active");
+        showBtn.classList.add("active");
+        enterBtn.classList.remove("active");
+      });
     </script>
   </body>
 </html>
