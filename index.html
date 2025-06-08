@@ -164,8 +164,35 @@
       </div>
 
       <div id="history-card" class="card">
-        <h2>Собранная история</h2>
+        <h2 id="story-title" style="cursor: pointer">Собранная история</h2>
+        <input
+          type="text"
+          id="custom-title"
+          placeholder="Введите новое название истории"
+          style="
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+          "
+        />
+
         <div id="collected-story"></div>
+        <div
+          id="final-message"
+          style="display: none; margin-top: 20px; text-align: center"
+        >
+          <p>
+            <em
+              >Разумеется, это не финал. История отважной пиратки и гениального
+              изобретателя только началась. И конец их приключения они уже
+              расскажут сами
+            </em>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -223,6 +250,44 @@
             (day) => `<p><strong>День ${day}:</strong> ${collected[day]}</p>`
           )
           .join("");
+
+        const titleElement = document.getElementById("story-title");
+        const titleInput = document.getElementById("custom-title");
+        const finalMessage = document.getElementById("final-message");
+
+        // Если собраны все 89 частей
+        if (sortedDays.length === 89) {
+          finalMessage.style.display = "block";
+
+          // Загружаем сохранённое название
+          const savedTitle = localStorage.getItem("customStoryTitle");
+          if (savedTitle) {
+            titleElement.innerText = savedTitle;
+          }
+
+          // Показываем поле, если пользователь ещё не вводил название
+          if (!savedTitle) {
+            titleInput.style.display = "block";
+            titleInput.focus();
+          }
+
+          // Обработка ввода нового названия
+          titleInput.addEventListener("change", () => {
+            const newTitle = titleInput.value.trim();
+            if (newTitle) {
+              titleElement.innerText = newTitle;
+              localStorage.setItem("customStoryTitle", newTitle);
+              titleInput.style.display = "none";
+            }
+          });
+
+          // Разрешаем редактировать название при клике
+          titleElement.addEventListener("click", () => {
+            titleInput.style.display = "block";
+            titleInput.value = titleElement.innerText;
+            titleInput.focus();
+          });
+        }
       }
 
       enterBtn.addEventListener("click", () => {
